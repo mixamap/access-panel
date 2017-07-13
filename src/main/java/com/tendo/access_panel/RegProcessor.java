@@ -12,9 +12,11 @@ import java.util.logging.Logger;
  */
 public class RegProcessor implements Runnable{
     private Socket socket;
+    private short rport;
     
-    public RegProcessor(Socket socket) {
+    public RegProcessor(Socket socket, short rport) {
         this.socket = socket;
+        this.rport = rport;
     }
 
     @Override
@@ -27,7 +29,9 @@ public class RegProcessor implements Runnable{
             Logger.getLogger("Access-Panel").log(Level.INFO, "registration result " + result);
             if (result == 1) {
                 Logger.getLogger("Access-Panel").log(Level.INFO, "Host registered on TUCBI controller");
-                new Thread(UdpProcessor.get()).start();
+                UdpProcessor udp = UdpProcessor.get();
+                udp.setRecvPort(rport);
+                new Thread(udp).start();
             }
             else {
                 Logger.getLogger("Access-Panel").log(Level.SEVERE, "Failed to register on the controller");

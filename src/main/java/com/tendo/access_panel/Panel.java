@@ -15,11 +15,6 @@ import java.util.logging.Logger;
  * Main Panel class
  */
 public class Panel {
-
-    public static final String PALM_HOST_IP = "127.0.0.1";
-    public static final short PALM_HOST_PORT = 6789;
-    public static final short RECV_UDP_PORT = 8765;
-    public static final String PALM_AUTH_CODE = "12345678";
     public static final int TIMEOUT_AUTHORIZE = 10000;
     public static final int TIMEOUT_UDP = 100000;
     public static final int EVENT_LENGTH = 230;
@@ -28,7 +23,7 @@ public class Panel {
         try {
             Panel panel = new Panel();
 
-            final String usage = "java -jar access-panel-jar-with-dependencies.jar host palm_port recv code";
+            final String usage = "Usage: java -jar access-panel-jar-with-dependencies.jar host palm_port recv code";
             if (args.length != 4) {
                 System.out.println(usage);
                 return;
@@ -56,10 +51,10 @@ public class Panel {
         
         Socket socket = new Socket();
         socket.setSoTimeout(TIMEOUT_AUTHORIZE);
-        socket.connect(new InetSocketAddress(PALM_HOST_IP, PALM_HOST_PORT), TIMEOUT_AUTHORIZE);
+        socket.connect(new InetSocketAddress(host, port), TIMEOUT_AUTHORIZE);
         Logger.getLogger("Access-Panel").log(Level.INFO, "Connected to registration socket");
 
-        new Thread(new RegProcessor(socket)).start();
+        new Thread(new RegProcessor(socket, rport)).start();
 
         byte[] message = new byte[10];
         Arrays.fill(message, (byte) 0);
