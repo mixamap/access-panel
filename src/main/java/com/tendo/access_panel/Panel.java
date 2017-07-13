@@ -28,7 +28,7 @@ public class Panel {
         try {
             Panel panel = new Panel();
 
-            final Strin usage = "java -jar access-panel-jar-with-dependencies.jar host palm_port recv code";
+            final String usage = "java -jar access-panel-jar-with-dependencies.jar host palm_port recv code";
             if (args.length != 4) {
                 System.out.println(usage);
                 return;
