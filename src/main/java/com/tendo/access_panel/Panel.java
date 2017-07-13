@@ -27,7 +27,14 @@ public class Panel {
     public static void main(String[] args) {
         try {
             Panel panel = new Panel();
-            panel.exec(PALM_HOST_IP, PALM_HOST_PORT, RECV_UDP_PORT, PALM_AUTH_CODE);
+
+            final Strin usage = "java -jar access-panel-jar-with-dependencies.jar host palm_port recv code";
+            if (args.length != 4) {
+                System.out.println(usage);
+                return;
+            }
+            
+            panel.exec(args[0], Short.parseShort(args[1]), Short.parseShort(args[2]), args[3]);
         } catch (IOException ex) {
             Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -47,10 +54,6 @@ public class Panel {
     private void exec(String host, short port, short rport, String msg) throws IOException {
         setLogLevel(Level.INFO);
         
-        Logger.getLogger("Access-Panel").log(Level.INFO, "Host: " + host);
-        Logger.getLogger("Access-Panel").log(Level.INFO, "Port: " + port);
-        Logger.getLogger("Access-Panel").log(Level.INFO, "Host: " + "UDP port: " + rport);
-
         Socket socket = new Socket();
         socket.setSoTimeout(TIMEOUT_AUTHORIZE);
         socket.connect(new InetSocketAddress(PALM_HOST_IP, PALM_HOST_PORT), TIMEOUT_AUTHORIZE);
